@@ -2,16 +2,16 @@
 echo "$2"
 
 # Extracting the user
-DW_POSTGRES_USER=$(echo $DW_POSTGRES_URI | sed -E 's#.*://([^:]+):.*#\1#')
+DW_POSTGRES_USER=$(echo $DW_POSTGRES_URI | sed -E 's#.://([^:]+):.#\1#')
 
 # Extracting the password
-DW_POSTGRES_PASSWORD=$(echo $DW_POSTGRES_URI | sed -E 's#.*://[^:]+:([^@]+)@.*#\1#')
+DW_POSTGRES_PASSWORD=$(echo $DW_POSTGRES_URI | sed -E 's#.://[^:]+:([^@]+)@.#\1#')
 
 # Extracting the host
-DW_POSTGRES_HOST=$(echo $DW_POSTGRES_URI | sed -E 's#.*://[^@]+@([^/]+).*#\1#')
+DW_POSTGRES_HOST=$(echo $DW_POSTGRES_URI | sed -E 's#.://[^@]+@([^/]+).#\1#')
 
 # Extracting the database
-DW_POSTGRES_DB=$(echo $DW_POSTGRES_URI | sed -E 's#.*/([^?]+)\?.*#\1#')
+DW_POSTGRES_DB=$(echo $DW_POSTGRES_URI | sed -E 's#./([^?]+)\?.#\1#')
 
 if ! echo "$2" | grep -q "Postgres DW"; then
     echo 'Setting up data warehouse source'
@@ -25,11 +25,11 @@ if ! echo "$2" | grep -q "Postgres DW"; then
         'engine': 'postgres',
         'name': 'Postgres DW',
         'details': {
-            'host':'$DW_POSTGRES_HOST',
-            'user':'$DW_POSTGRES_USER',
-            'password':'$DW_POSTGRES_PASSWORD',
-            'db':'$DW_POSTGRES_DB',
-            'ssl': 'true'
+            'host':'postgres-db',
+            'user':'postgres',
+            'password':'postgres',
+            'db':'postgres-dw',
+            'sslmode': 'disable'
         }
     }
     " > file.json
